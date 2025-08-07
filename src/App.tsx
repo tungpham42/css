@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import AnimationForm from "./components/AnimationForm";
 import PreviewBox from "./components/PreviewBox";
 import MainBrandLogo from "./components/MainBrandLogo";
@@ -13,6 +13,7 @@ function App() {
   const [iteration, setIteration] = useState("infinite");
   const [easing, setEasing] = useState("ease");
   const [direction, setDirection] = useState("normal");
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (field: string, value: string) => {
     switch (field) {
@@ -36,6 +37,7 @@ function App() {
         break;
     }
   };
+
   const keyframesMap: Record<string, string> = {
     bounce: `
 @keyframes bounce {
@@ -121,7 +123,22 @@ ${keyframesMap[animation] || ""}
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(cssCode);
-    alert("CSS code copied!");
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000); // Hide alert after 5 seconds
+  };
+
+  const downloadCSS = () => {
+    const blob = new Blob([cssCode], { type: "text/css" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${animation}-animation.css`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 5000); // Hide alert after 5 seconds
   };
 
   return (
@@ -142,7 +159,6 @@ ${keyframesMap[animation] || ""}
         direction={direction}
         onChange={handleChange}
       />
-
       <PreviewBox
         animation={animation}
         duration={duration}
@@ -151,13 +167,30 @@ ${keyframesMap[animation] || ""}
         easing={easing}
         direction={direction}
       />
-
       <div className="mt-4">
         <h5>Generated CSS:</h5>
         <pre className="bg-light p-3 border">{cssCode}</pre>
-        <Button variant="primary" onClick={copyToClipboard}>
-          <FontAwesomeIcon icon={faCopy} /> Copy CSS
-        </Button>
+        <div className="d-flex gap-2">
+          <Button variant="primary" onClick={copyToClipboard}>
+            <FontAwesomeIcon icon={faCopy} /> Copy CSS
+          </Button>
+          <Button variant="secondary" onClick={downloadCSS}>
+            <FontAwesomeIcon icon={faDownload} /> Download CSS
+          </Button>
+        </div>
+        {showAlert && (
+          <Alert
+            variant="success"
+            className="mt-3"
+            onClose={() => setShowAlert(false)}
+            dismissible
+          >
+            CSS code{" "}
+            {showAlert
+              ? "downloaded and copied to clipboard!"
+              : "copied to clipboard!"}
+          </Alert>
+        )}
       </div>
     </Container>
   );

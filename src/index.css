@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+  margin: 0 !important;
+  font-family: "Work Sans", sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%) !important;
+  min-height: 100vh !important;
+}
+
+code {
+  font-family: "Fira Code", source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace !important;
+}
+
+.preview-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 2rem !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0.5rem !important;
+  min-height: 200px !important;
+}
+
+.preview-box {
+  background: linear-gradient(45deg, #4c1d95, #9f7aea) !important;
+  color: white !important;
+  padding: 1.5rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  transition: transform 0.3s ease !important;
+}
